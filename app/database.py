@@ -47,6 +47,21 @@ def get_students():
     with get_db_connection()as connection:
         return connection.execute('SELECT* FROM students').fetchall()
     
+def update_student(old_id_number, name, age, email, country, new_id_number):
+    with get_db_connection() as connection:
+        connection.execute(
+            '''UPDATE students 
+               SET name = ?, age = ?, email = ?, country = ?, id_number = ? 
+               WHERE id_number = ?''',
+            (name, age, email, country, new_id_number, old_id_number)
+        )
+        connection.commit()
+
+def delete_student(id_number):
+    with get_db_connection() as connection:
+        connection.execute('DELETE FROM students WHERE id_number = ?', (id_number,))
+        connection.commit()
+    
 
     
 
@@ -60,6 +75,20 @@ def add_teacher(name, course, email, tsc_number,years_of_experience):
 def get_teachers():
     with get_db_connection()as connection:
         return connection.execute('SELECT* FROM teachers').fetchall()
+def update_teacher(old_tsc_number, name, course, email, new_tsc_number, years_of_experience):
+    with get_db_connection() as connection:
+        connection.execute(
+            '''UPDATE teachers 
+               SET name = ?, course = ?, email = ?, tsc_number = ?, years_of_experience = ? 
+               WHERE tsc_number = ?''',
+            (name, course, email, new_tsc_number, years_of_experience, old_tsc_number)
+        )
+        connection.commit()
+
+def delete_teacher(tsc_number):
+    with get_db_connection() as connection:
+        connection.execute('DELETE FROM teachers WHERE tsc_number = ?', (tsc_number,))
+        connection.commit()
     
 
 
@@ -73,4 +102,18 @@ def add_course(name, topics, duration, course_teacher,is_online):
 def get_courses():
         with get_db_connection()as connection:
          return connection.execute('SELECT* FROM courses').fetchall()
+def update_course(old_name, name, topics, is_online, course_teacher, duration):
+    with get_db_connection() as connection:
+        connection.execute(
+            '''UPDATE courses 
+               SET name = ?, topics = ?, is_online = ?, course_teacher = ?, duration = ? 
+               WHERE name = ?''',
+            (name, topics, is_online, course_teacher, duration, old_name)
+        )
+        connection.commit()
+
+def delete_course(name):
+    with get_db_connection() as connection:
+        connection.execute('DELETE FROM courses WHERE name = ?', (name,))
+        connection.commit()
     
